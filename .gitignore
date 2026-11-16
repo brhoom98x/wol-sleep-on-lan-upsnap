@@ -1,0 +1,16 @@
+# Never commit the SOL binary — download it from upstream releases
+sol.exe
+sol
+*.zip
+
+# Local config with real addresses; examples/ holds the sanitised templates
+sol.local.json
+*.local.json
+
+# OS / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+.vscode/
+.idea/

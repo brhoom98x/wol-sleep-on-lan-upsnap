@@ -1,0 +1,18 @@
+; Runs Sleep-On-LAN as root so it can suspend and power off the machine.
+; Install:  sudo cp sleep-on-lan.service /etc/systemd/system/
+;           sudo systemctl enable --now sleep-on-lan.service
+; Expects the binary at /opt/sleep-on-lan/sol and sol.json beside it.
+
+[Unit]
+Description=Sleep-On-LAN
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/opt/sleep-on-lan/sol
+WorkingDirectory=/opt/sleep-on-lan
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

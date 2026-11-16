@@ -1,0 +1,16 @@
+; Re-arms Wake-on-LAN at every boot. `ethtool -s ... wol g` does not persist on its own.
+; Install:  sudo cp wol.service /etc/systemd/system/ && sudo systemctl enable --now wol.service
+; Change eth0 to your interface name (`ip link` to list them).
+
+[Unit]
+Description=Enable Wake-on-LAN
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/ethtool -s eth0 wol g
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

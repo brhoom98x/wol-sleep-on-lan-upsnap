@@ -1,0 +1,29 @@
+{
+  "Listeners": [
+    "UDP:9",
+    "HTTP:8009"
+  ],
+  "LogLevel": "INFO",
+  "BroadcastIP": "192.168.1.255",
+  "ExitIfAnyPortIsAlreadyUsed": false,
+  "Commands": [
+    {
+      "Operation": "sleep",
+      "Command": "C:\\Windows\\System32\\rundll32.exe powrprof.dll,SetSuspendState 0,1,0",
+      "Type": "external",
+      "Default": true
+    },
+    {
+      "Operation": "halt",
+      "Command": "C:\\Windows\\System32\\shutdown.exe -s -t 0 -f",
+      "Type": "external",
+      "Default": false
+    },
+    {
+      "Operation": "reboot",
+      "Command": "C:\\Windows\\System32\\shutdown.exe -r -t 0 -f",
+      "Type": "external",
+      "Default": false
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "Listeners": [
+    "UDP:9",
+    "HTTP:8009"
+  ],
+  "LogLevel": "INFO",
+  "BroadcastIP": "192.168.1.255",
+  "ExitIfAnyPortIsAlreadyUsed": false,
+  "Commands": [
+    {
+      "Operation": "sleep",
+      "Command": "systemctl suspend",
+      "Type": "external",
+      "Default": true
+    },
+    {
+      "Operation": "halt",
+      "Command": "systemctl poweroff",
+      "Type": "external",
+      "Default": false
+    },
+    {
+      "Operation": "reboot",
+      "Command": "systemctl reboot",
+      "Type": "external",
+      "Default": false
+    }
+  ]
+}

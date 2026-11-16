@@ -1,0 +1,1431 @@
+<title>Remote Power Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+
+<style>
+  /* ---------- tokens: light is the base ---------- */
+  :root {
+    --ground:      #EBEEF0;
+    --surface:     #FFFFFF;
+    --surface-2:   #F4F6F7;
+    --ink:         #11161B;
+    --ink-2:       #4E5A66;
+    --ink-3:       #7C8792;
+    --rule:        #D2D8DE;
+    --rule-strong: #B3BDC6;
+
+    --accent:      #9C5410;   /* standby amber - the LED that stays lit when the PC is off */
+    --accent-soft: #F6E8D8;
+    --ok:          #1D6B4A;   /* link green */
+    --ok-soft:     #DDEDE4;
+    --warn:        #8A5D00;
+    --warn-soft:   #F7EBCF;
+    --stop:        #9C2323;
+    --stop-soft:   #F6DEDE;
+
+    --code-bg:     #F1F3F5;
+    --code-ink:    #1C2530;
+
+    --shadow: 0 1px 2px rgba(17,22,27,.06), 0 8px 24px rgba(17,22,27,.05);
+
+    --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --body: "Literata", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0D1114;
+      --surface:     #151B21;
+      --surface-2:   #1B232A;
+      --ink:         #E4EAEF;
+      --ink-2:       #9AA7B3;
+      --ink-3:       #6F7D89;
+      --rule:        #27313A;
+      --rule-strong: #3A4753;
+
+      --accent:      #E39440;
+      --accent-soft: #33240F;
+      --ok:          #55B287;
+      --ok-soft:     #12291F;
+      --warn:        #D6A63F;
+      --warn-soft:   #2E2410;
+      --stop:        #E07272;
+      --stop-soft:   #2E1616;
+
+      --code-bg:     #10161B;
+      --code-ink:    #D6DEE6;
+
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0D1114;
+    --surface:     #151B21;
+    --surface-2:   #1B232A;
+    --ink:         #E4EAEF;
+    --ink-2:       #9AA7B3;
+    --ink-3:       #6F7D89;
+    --rule:        #27313A;
+    --rule-strong: #3A4753;
+
+    --accent:      #E39440;
+    --accent-soft: #33240F;
+    --ok:          #55B287;
+    --ok-soft:     #12291F;
+    --warn:        #D6A63F;
+    --warn-soft:   #2E2410;
+    --stop:        #E07272;
+    --stop-soft:   #2E1616;
+
+    --code-bg:     #10161B;
+    --code-ink:    #D6DEE6;
+
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+
+  /* ---------- base ---------- */
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--display); text-wrap: balance; margin: 0; }
+
+  p { margin: 0; }
+
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: .87em;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: .12em .38em;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+  }
+
+  pre {
+    margin: 0;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* ---------- masthead ---------- */
+  header.mast {
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface);
+  }
+  .mast-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 56px 24px 40px;
+    display: grid;
+    gap: 26px;
+  }
+  .mast h1 {
+    font-size: clamp(34px, 5.2vw, 58px);
+    font-weight: 700;
+    letter-spacing: -.022em;
+    line-height: 1.04;
+  }
+  .mast .lede {
+    font-size: clamp(17px, 2vw, 20px);
+    color: var(--ink-2);
+    max-width: 62ch;
+  }
+
+  /* power-state legend: the whole guide hinges on which state the PC is in */
+  .states {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .state {
+    display: grid;
+    gap: 2px;
+    padding: 10px 14px;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--rule-strong);
+    border-radius: 4px;
+    background: var(--surface-2);
+    min-width: 158px;
+  }
+  .state b {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: var(--ink);
+  }
+  .state span { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+  .state.lit { border-left-color: var(--accent); }
+
+  /* ---------- layout ---------- */
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding-top: 48px;
+  }
+  @media (min-width: 1000px) {
+    .cols { grid-template-columns: 208px minmax(0, 1fr); gap: 56px; align-items: start; }
+    nav.toc { position: sticky; top: 28px; }
+  }
+
+  nav.toc { display: grid; gap: 8px; align-content: start; }
+  nav.toc .eyebrow { margin-bottom: 4px; }
+  nav.toc a {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-2);
+    text-decoration: none;
+    padding: 5px 0 5px 13px;
+    border-left: 2px solid var(--rule);
+    line-height: 1.35;
+  }
+  nav.toc a:hover { color: var(--ink); border-left-color: var(--accent); }
+  nav.toc a .n {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    display: block;
+  }
+
+  main { display: grid; gap: 56px; min-width: 0; }
+
+  section.stage { display: grid; gap: 22px; scroll-margin-top: 24px; }
+
+  .stage-head {
+    display: grid;
+    gap: 8px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .stage-head h2 {
+    font-size: clamp(24px, 3.2vw, 33px);
+    font-weight: 700;
+    letter-spacing: -.017em;
+  }
+  .stage-head .sub { color: var(--ink-2); font-size: 15.5px; max-width: 68ch; }
+
+  .prose { max-width: 68ch; display: grid; gap: 16px; }
+  .prose h3 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -.005em;
+    margin-top: 10px;
+  }
+
+  /* ---------- numbered steps: order genuinely matters here ---------- */
+  ol.steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 26px;
+    counter-reset: step;
+  }
+  ol.steps > li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+  ol.steps > li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    margin-top: 2px;
+  }
+  ol.steps .body { display: grid; gap: 12px; min-width: 0; max-width: 68ch; }
+  ol.steps .body > p:first-child { font-weight: 600; }
+  ol.steps .body .note { color: var(--ink-2); font-size: 15.5px; }
+
+  ul.plain { margin: 0; padding-left: 20px; display: grid; gap: 7px; color: var(--ink-2); font-size: 15.5px; }
+  ul.plain strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- callouts ---------- */
+  .call {
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--rule-strong);
+    border-radius: 4px;
+    background: var(--surface);
+    padding: 14px 16px;
+    display: grid;
+    gap: 7px;
+    max-width: 68ch;
+  }
+  .call .tag {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .call p { font-size: 15.5px; color: var(--ink-2); }
+  .call.gotcha   { border-left-color: var(--warn); background: var(--warn-soft); }
+  .call.gotcha .tag { color: var(--warn); }
+  .call.blocker  { border-left-color: var(--stop); background: var(--stop-soft); }
+  .call.blocker .tag { color: var(--stop); }
+  .call.check    { border-left-color: var(--ok); background: var(--ok-soft); }
+  .call.check .tag { color: var(--ok); }
+
+  /* ---------- flow strip ---------- */
+  .flow {
+    display: grid;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .flow-row {
+    display: grid;
+    grid-template-columns: minmax(0,1fr);
+    gap: 10px;
+    align-items: center;
+  }
+  @media (min-width: 720px) {
+    .flow-row { grid-template-columns: 150px minmax(0,1fr) 178px; }
+  }
+  .node {
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    background: var(--surface-2);
+    padding: 10px 12px;
+    display: grid;
+    gap: 2px;
+  }
+  .node b { font-family: var(--display); font-size: 14px; font-weight: 600; }
+  .node span { font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
+  .node.off  { border-color: var(--accent); }
+  .node.on   { border-color: var(--ok); }
+  .link {
+    display: grid;
+    gap: 3px;
+    justify-items: center;
+    padding: 0 6px;
+    border-top: 1px dashed var(--rule-strong);
+    border-bottom: 1px dashed var(--rule-strong);
+    padding-block: 7px;
+  }
+  .link b { font-family: var(--mono); font-size: 11.5px; font-weight: 600; color: var(--ink); }
+  .link span { font-size: 12.5px; color: var(--ink-2); text-align: center; }
+
+  /* ---------- tables ---------- */
+  .twrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 560px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  thead th {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.k { font-family: var(--mono); font-size: 13px; white-space: nowrap; color: var(--ink); }
+  td.d { color: var(--ink-2); }
+
+  .field { font-family: var(--mono); font-size: 13px; color: var(--ink); white-space: nowrap; }
+
+  /* ---------- misc ---------- */
+  .ph {
+    font-family: var(--mono);
+    font-size: .87em;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: .1em .36em;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+
+  footer.end {
+    margin-top: 72px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-3);
+    font-size: 14px;
+    max-width: 68ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+
+  /* ---------- print / PDF ---------- */
+  @media print {
+    /* always print the light palette, whatever the screen theme is */
+    :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
+      --ground:      #FFFFFF;
+      --surface:     #FFFFFF;
+      --surface-2:   #F4F6F7;
+      --ink:         #11161B;
+      --ink-2:       #414C57;
+      --ink-3:       #6B7681;
+      --rule:        #C8D0D7;
+      --rule-strong: #A6B1BA;
+      --accent:      #8A4A0E;
+      --accent-soft: #F6E8D8;
+      --ok:          #1A5F42;
+      --ok-soft:     #E3F0E9;
+      --warn:        #7A5200;
+      --warn-soft:   #F8EFD8;
+      --stop:        #8C1F1F;
+      --stop-soft:   #F8E3E3;
+      --code-bg:     #F2F4F6;
+      --code-ink:    #11161B;
+      --shadow: none;
+    }
+
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    @page { size: A4; margin: 16mm 14mm; }
+
+    body { background: #FFFFFF; font-size: 10.5pt; line-height: 1.5; }
+
+    .wrap { max-width: none; padding: 0; }
+    .mast-inner { padding: 0 0 18px; max-width: none; }
+    header.mast { border-bottom-width: 2px; }
+
+    /* single column: the sticky sidebar has no meaning on paper */
+    nav.toc { display: none; }
+    .cols { display: block; padding-top: 22px; }
+    main { display: block; }
+
+    .mast h1 { font-size: 30pt; }
+    .mast .lede { font-size: 11.5pt; max-width: none; }
+    .prose, .call, ol.steps .body, .stage-head .sub { max-width: none; }
+
+    section.stage { margin-bottom: 26px; }
+    .stage-head h2 { font-size: 17pt; }
+    .stage-head { break-after: avoid; page-break-after: avoid; }
+    h3 { break-after: avoid; page-break-after: avoid; }
+
+    /* keep a step, a callout or a table from splitting across pages */
+    ol.steps > li, .call, .flow-row, .twrap { break-inside: avoid; page-break-inside: avoid; }
+    pre { break-inside: avoid; page-break-inside: avoid; font-size: 8.6pt; white-space: pre-wrap; }
+    table { min-width: 0; font-size: 9pt; }
+    .twrap { overflow-x: visible; }
+    thead { display: table-header-group; }
+    tr { break-inside: avoid; page-break-inside: avoid; }
+
+    /* let stages flow rather than forcing a page each: forced breaks left
+       several pages holding only a trailing callout */
+    section.stage { margin-bottom: 30px; }
+
+    a { color: var(--ink); text-decoration: none; }
+    footer.end { max-width: none; }
+  }
+</style>
+
+<header class="mast">
+  <div class="mast-inner">
+    <div>
+      <p class="eyebrow">Wake-on-LAN &middot; Sleep-On-LAN &middot; UpSnap</p>
+      <h1>Remote Power Field Guide</h1>
+    </div>
+    <p class="lede">
+      How to wake a PC that is fully powered off, put it to sleep, and shut it down &mdash; all from a
+      browser tab, over your own network. Written for someone who has never touched a BIOS power
+      setting before. Works for any desktop with a wired network card.
+    </p>
+    <div class="states">
+      <div class="state lit"><b>S0</b><span>Running. Normal on.</span></div>
+      <div class="state lit"><b>S3</b><span>Sleep. RAM powered, everything else dark.</span></div>
+      <div class="state lit"><b>S4</b><span>Hibernate. RAM written to disk, then off.</span></div>
+      <div class="state lit"><b>S5</b><span>Soft off. What "Shut down" gives you.</span></div>
+      <div class="state"><b>G3</b><span>Unplugged. Nothing can wake it. Ever.</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="cols">
+
+    <nav class="toc">
+      <p class="eyebrow">Contents</p>
+      <a href="#how"><span class="n">Start here</span>How it works</a>
+      <a href="#bios"><span class="n">Stage 1</span>BIOS / UEFI</a>
+      <a href="#windows"><span class="n">Stage 2</span>Windows &amp; the NIC</a>
+      <a href="#test"><span class="n">Stage 3</span>Prove the wake</a>
+      <a href="#sol"><span class="n">Stage 4</span>Install Sleep-On-LAN</a>
+      <a href="#upsnap"><span class="n">Stage 5</span>Wire up UpSnap</a>
+      <a href="#trouble"><span class="n">Reference</span>Troubleshooting</a>
+      <a href="#linux"><span class="n">Appendix</span>Linux targets</a>
+    </nav>
+
+    <main>
+
+      <!-- ============ HOW IT WORKS ============ -->
+      <section class="stage" id="how">
+        <div class="stage-head">
+          <p class="eyebrow">Start here</p>
+          <h2>How the three pieces fit together</h2>
+          <p class="sub">
+            Waking a PC and shutting one down are completely different mechanisms. Understanding
+            which is which saves you hours of debugging the wrong half.
+          </p>
+        </div>
+
+        <div class="prose">
+          <p>
+            <strong>Waking happens in hardware.</strong> When you shut a PC down it is not really off &mdash;
+            the power supply keeps a low-voltage rail alive, and your network card sips from it. The card
+            sits there watching every packet on the wire. When it sees a specially formed "magic packet"
+            containing its own MAC address, it electrically pokes the motherboard, and the machine boots.
+            No software is involved, because no software is running.
+          </p>
+          <p>
+            <strong>Sleeping and shutting down happen in software.</strong> The PC is already on, so
+            something running on it has to receive the request and act. That something is
+            <strong>Sleep-On-LAN</strong> (SOL), a tiny daemon you install on the PC. It listens on an
+            HTTP port and exposes URLs like <code>/sleep</code> and <code>/halt</code>.
+          </p>
+          <p>
+            <strong>UpSnap</strong> is the web dashboard that drives both: it sends the magic packet to
+            wake, and calls SOL's URLs to sleep or shut down.
+          </p>
+        </div>
+
+        <div class="flow">
+          <div class="flow-row">
+            <div class="node off"><b>UpSnap</b><span>dashboard</span></div>
+            <div class="link">
+              <b>UDP :9 &nbsp;&rarr;&nbsp; magic packet</b>
+              <span>broadcast onto the subnet, addressed to the PC's MAC</span>
+            </div>
+            <div class="node off"><b>Network card</b><span>PC in S3 / S4 / S5</span></div>
+          </div>
+          <div class="flow-row">
+            <div class="node on"><b>UpSnap</b><span>dashboard</span></div>
+            <div class="link">
+              <b>HTTP :8009 &nbsp;&rarr;&nbsp; /sleep or /halt</b>
+              <span>a plain web request the SOL daemon answers</span>
+            </div>
+            <div class="node on"><b>Sleep-On-LAN</b><span>PC in S0, running</span></div>
+          </div>
+        </div>
+
+        <div class="call">
+          <span class="tag">What you need before starting</span>
+          <p>
+            A desktop PC with a <strong>wired ethernet connection</strong> (Wi-Fi wake is a different,
+            far less reliable feature and is not covered here). Administrator access on that PC. UpSnap
+            already installed somewhere on the same network. And physical access to the PC, because
+            Stage&nbsp;1 happens before Windows loads.
+          </p>
+        </div>
+
+        <div class="call gotcha">
+          <span class="tag">Placeholders used throughout</span>
+          <p>
+            Replace <span class="ph">&lt;PC-IP&gt;</span> with the target PC's address,
+            <span class="ph">&lt;PC-MAC&gt;</span> with its MAC,
+            <span class="ph">&lt;UPSNAP-IP&gt;</span> with the machine running UpSnap, and
+            <span class="ph">&lt;BROADCAST&gt;</span> with the subnet broadcast address
+            (for <code>192.168.1.0/24</code> that is <code>192.168.1.255</code>).
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ BIOS ============ -->
+      <section class="stage" id="bios">
+        <div class="stage-head">
+          <p class="eyebrow">Stage 1</p>
+          <h2>BIOS / UEFI &mdash; keep the card powered</h2>
+          <p class="sub">
+            If the firmware cuts power to the network card when the PC shuts down, nothing you do in
+            Windows can help. Settle this first.
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <div class="body">
+              <p>Enter the firmware setup.</p>
+              <p class="note">
+                Restart and press <code>Del</code> or <code>F2</code> repeatedly as it boots. If it flies
+                past too fast, hold <kbd>Shift</kbd> while clicking Restart in Windows, then choose
+                Troubleshoot &rarr; Advanced options &rarr; UEFI Firmware Settings.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="body">
+              <p>Find the power management section.</p>
+              <p class="note">
+                Usually <strong>Advanced &rarr; APM Configuration</strong> on ASUS,
+                <strong>Settings &rarr; Advanced &rarr; Wake Up Event Setup</strong> on MSI,
+                <strong>Power Management</strong> on Gigabyte and ASRock.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="body">
+              <p>Turn wake-from-network on.</p>
+              <p class="note">Its name varies by vendor. Set whichever of these you find to <strong>Enabled</strong>:</p>
+              <ul class="plain">
+                <li><strong>Power On By PCI-E / PCI</strong> &mdash; ASUS, ASRock</li>
+                <li><strong>Resume By PCI-E Device</strong> &mdash; Gigabyte</li>
+                <li><strong>Resume By PME</strong> or <strong>PME Event Wake Up</strong> &mdash; MSI, older boards</li>
+                <li><strong>Wake on LAN</strong> or <strong>Wake on Onboard LAN</strong> &mdash; Dell, HP, Lenovo prebuilts</li>
+              </ul>
+            </div>
+          </li>
+          <li>
+            <div class="body">
+              <p>Turn off the power-saving settings that starve the card.</p>
+              <ul class="plain">
+                <li><strong>ErP Ready</strong> (also <strong>EuP</strong>) &rarr; <strong>Disabled</strong></li>
+                <li><strong>Deep Sleep / Deep S5</strong> &rarr; <strong>Disabled</strong></li>
+              </ul>
+              <p class="note">
+                These exist to meet European standby-power limits by cutting the +5&nbsp;V standby rail
+                when the PC is off. That rail is exactly what your network card runs on.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="body">
+              <p>Save and exit.</p>
+              <p class="note">Usually <code>F10</code>. The PC reboots into Windows.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="call blocker">
+          <span class="tag">The single most common blocker</span>
+          <p>
+            <strong>ErP Ready left enabled</strong> is the number one reason wake-from-shutdown fails while
+            wake-from-sleep works perfectly. Sleep keeps the rail alive regardless; only a full shutdown
+            exposes the setting. If you take one thing from this stage, take this.
+          </p>
+        </div>
+
+        <div class="call blocker">
+          <span class="tag">Every BIOS update undoes this stage</span>
+          <p>
+            Flashing new firmware resets CMOS to factory defaults, which quietly puts
+            <strong>ErP Ready</strong> back to Enabled and <strong>Power On By PCI-E</strong> back to
+            Disabled. The Windows half of the setup is untouched and keeps reporting healthy, so the
+            machine looks fine right until the next shutdown &mdash; at which point it is unreachable
+            with no way to wake it remotely. Re-apply this stage after <em>any</em> BIOS update, before
+            you power the machine down and walk away from it.
+          </p>
+        </div>
+
+        <div class="call check">
+          <span class="tag">Checkpoint</span>
+          <p>
+            Shut the PC down completely, then look at the ethernet port on the back. <strong>The link
+            light should still be lit or blinking.</strong> If it is dark, the card has no standby power
+            and you have missed a setting above. Do not continue until that light is on.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ WINDOWS ============ -->
+      <section class="stage" id="windows">
+        <div class="stage-head">
+          <p class="eyebrow">Stage 2</p>
+          <h2>Windows and the network card</h2>
+          <p class="sub">
+            Three separate settings, in three separate places, all of which must be right. Windows does
+            not present them together, which is why this trips people up.
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <div class="body">
+              <p>Turn off Fast Startup.</p>
+              <p class="note">
+                Windows' "Shut down" is a lie by default &mdash; it hibernates the kernel instead of
+                shutting down, and the network card gets torn down in the process. Open
+                <strong>Control Panel &rarr; Power Options &rarr; Choose what the power buttons do</strong>,
+                click <strong>Change settings that are currently unavailable</strong>, then untick
+                <strong>Turn on fast startup</strong> and save.
+              </p>
+              <p class="note">Or from an <strong>Administrator</strong> PowerShell:</p>
+              <pre><code>powercfg /hibernate off</code></pre>
+              <p class="note">
+                That disables Fast Startup and hibernation together. To keep hibernation but drop Fast
+                Startup, use the Control Panel checkbox instead.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Allow the card to wake the PC.</p>
+              <p class="note">
+                Press <kbd>Win</kbd>+<kbd>X</kbd> &rarr; <strong>Device Manager</strong> &rarr; expand
+                <strong>Network adapters</strong> &rarr; double-click your wired card &rarr;
+                <strong>Power Management</strong> tab. Tick all three:
+              </p>
+              <ul class="plain">
+                <li>Allow the computer to turn off this device to save power</li>
+                <li><strong>Allow this device to wake the computer</strong></li>
+                <li><strong>Only allow a magic packet to wake the computer</strong></li>
+              </ul>
+              <p class="note">
+                That third one matters more than it looks. Without it, ordinary broadcast traffic will
+                wake the PC at random hours and you will never work out why.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Set the driver properties &mdash; including the one for shutdown.</p>
+              <p class="note">
+                Same dialog, <strong>Advanced</strong> tab. The list differs by manufacturer. Set what
+                applies:
+              </p>
+              <div class="twrap">
+                <table>
+                  <thead>
+                    <tr><th>Property</th><th>Set to</th><th>Found on</th><th>What it covers</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="k">Wake on Magic Packet</td>
+                      <td class="k">Enabled</td>
+                      <td class="d">Intel, Realtek, Broadcom</td>
+                      <td class="d">Wake from sleep and hibernate (S3&nbsp;/&nbsp;S4)</td>
+                    </tr>
+                    <tr>
+                      <td class="k">Enable PME</td>
+                      <td class="k">Enabled</td>
+                      <td class="d">Intel</td>
+                      <td class="d"><strong>Wake from full shutdown (S5)</strong></td>
+                    </tr>
+                    <tr>
+                      <td class="k">Shutdown Wake-On-Lan</td>
+                      <td class="k">Enabled</td>
+                      <td class="d">Realtek</td>
+                      <td class="d"><strong>Wake from full shutdown (S5)</strong></td>
+                    </tr>
+                    <tr>
+                      <td class="k">Wake on Pattern Match</td>
+                      <td class="k">Disabled</td>
+                      <td class="d">Intel, Realtek</td>
+                      <td class="d">Stops random traffic waking the PC</td>
+                    </tr>
+                    <tr>
+                      <td class="k">Energy Efficient Ethernet</td>
+                      <td class="k">Disabled</td>
+                      <td class="d">Most vendors</td>
+                      <td class="d">Can drop the link before a packet lands</td>
+                    </tr>
+                    <tr>
+                      <td class="k">Green Ethernet</td>
+                      <td class="k">Disabled</td>
+                      <td class="d">Realtek</td>
+                      <td class="d">Same problem, different name</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Verify from PowerShell rather than trusting the checkboxes.</p>
+              <pre><code>Get-NetAdapter | Where-Object Status -eq 'Up'
+
+Get-NetAdapterAdvancedProperty -Name 'Ethernet' |
+    Format-Table DisplayName, DisplayValue -AutoSize
+
+powercfg /devicequery wake_armed</code></pre>
+              <p class="note">
+                Substitute your adapter's name for <code>Ethernet</code> if it differs. Your network card
+                must appear in the <code>wake_armed</code> list. If it does not, step 2 did not take.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="call gotcha">
+          <span class="tag">The separate-settings trap</span>
+          <p>
+            "Wake on Magic Packet" and the S5 property (<strong>Enable PME</strong> on Intel,
+            <strong>Shutdown Wake-On-Lan</strong> on Realtek) are two different settings covering two
+            different power states. Enabling only the first gives you a PC that wakes reliably from sleep
+            and ignores you completely after a shutdown &mdash; the exact symptom most guides never explain.
+          </p>
+        </div>
+
+        <div class="call blocker">
+          <span class="tag">This will break again later</span>
+          <p>
+            <strong>Network driver updates reset every property on the Advanced tab to its factory
+            default</strong>, and the S5 property ships disabled. If Wake-on-LAN mysteriously stops
+            working months from now, come back to step&nbsp;3 before suspecting anything else.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ TEST ============ -->
+      <section class="stage" id="test">
+        <div class="stage-head">
+          <p class="eyebrow">Stage 3</p>
+          <h2>Prove the wake works</h2>
+          <p class="sub">
+            Test this on its own, before adding SOL or UpSnap. Chasing a wake failure through three
+            layers at once is miserable; chasing it through one is easy.
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <div class="body">
+              <p>Write down the PC's MAC address.</p>
+              <pre><code>Get-NetAdapter | Format-Table Name, MacAddress, Status</code></pre>
+              <p class="note">
+                You want the MAC of the wired card that is <code>Up</code>. Ignore anything belonging to
+                VMware, VirtualBox, Hyper-V, Tailscale or a VPN &mdash; those adapters do not exist when
+                the PC is off, and pointing your tools at one guarantees failure.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div class="body">
+              <p>Shut the PC down. Not sleep &mdash; a real shutdown.</p>
+            </div>
+          </li>
+          <li>
+            <div class="body">
+              <p>Send a magic packet from another machine on the same network.</p>
+              <p class="note">From Linux or a container:</p>
+              <pre><code>wakeonlan &lt;PC-MAC&gt;
+# or
+etherwake -i eth0 &lt;PC-MAC&gt;</code></pre>
+              <p class="note">From another Windows PC, in PowerShell:</p>
+              <pre><code>$mac  = '&lt;PC-MAC&gt;' -replace '[:-]',''
+$pkt  = ([byte[]](,0xFF * 6)) + ((1..16) | ForEach-Object {
+            [byte[]] ($mac -split '(..)' -ne '' | ForEach-Object { [convert]::ToByte($_,16) })
+        })
+$udp  = New-Object System.Net.Sockets.UdpClient
+$udp.Connect(([System.Net.IPAddress]::Broadcast), 9)
+$udp.Send($pkt, $pkt.Length)
+$udp.Close()</code></pre>
+            </div>
+          </li>
+          <li>
+            <div class="body">
+              <p>The PC should power on within a couple of seconds.</p>
+              <p class="note">
+                If it does, the hard part is done &mdash; everything after this is software you can debug
+                with a running machine in front of you. If it does not, go to
+                <a href="#trouble">Troubleshooting</a> before continuing.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="call gotcha">
+          <span class="tag">Why the sender must be on the same subnet</span>
+          <p>
+            A magic packet is normally sent as a broadcast, and routers do not forward broadcasts between
+            subnets. If UpSnap lives on a different VLAN from the PC, the packet dies at the router. Two
+            fixes: run UpSnap on the same subnet as the PCs it manages (simplest by far), or add a
+            <strong>static ARP entry</strong> on the router mapping the PC's IP to its MAC so a unicast
+            packet can be delivered to a machine that is switched off.
+          </p>
+        </div>
+
+        <div class="call check">
+          <span class="tag">Checkpoint</span>
+          <p>
+            The PC boots from a full shutdown when you send a magic packet. Leave it running &mdash;
+            Stage&nbsp;4 happens on this machine.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ SOL ============ -->
+      <section class="stage" id="sol">
+        <div class="stage-head">
+          <p class="eyebrow">Stage 4</p>
+          <h2>Install Sleep-On-LAN on the PC</h2>
+          <p class="sub">
+            This gives you sleep and shutdown. It is one small program plus one config file, running in
+            the background as a system task.
+          </p>
+        </div>
+
+        <div class="prose">
+          <p>
+            You could instead let UpSnap shut Windows down with <code>net rpc shutdown</code>, but that
+            means storing a Windows username and password in plain text in UpSnap's database, and
+            loosening Windows' remote-access defaults. SOL avoids both: no credentials anywhere, and one
+            daemon that handles sleep and shutdown alike.
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <div class="body">
+              <p>Download and unpack it.</p>
+              <p class="note">
+                Get the latest release from
+                <a href="https://github.com/SR-G/sleep-on-lan/releases">github.com/SR-G/sleep-on-lan</a>.
+                Create <code>C:\Tools\sleep-on-lan\</code> and put the Windows 64-bit executable there,
+                renamed to <code>sol.exe</code>.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Create the config file.</p>
+              <p class="note">
+                Save this as <code>sol.json</code> in the same folder. Note the doubled backslashes &mdash;
+                that is required by JSON, and a single backslash will stop SOL from starting.
+              </p>
+              <pre><code>{
+  "Listeners": [
+    "UDP:9",
+    "HTTP:8009"
+  ],
+  "LogLevel": "INFO",
+  "BroadcastIP": "&lt;BROADCAST&gt;",
+  "ExitIfAnyPortIsAlreadyUsed": false,
+  "Commands": [
+    {
+      "Operation": "sleep",
+      "Command": "C:\\Windows\\System32\\rundll32.exe powrprof.dll,SetSuspendState 0,1,0",
+      "Type": "external",
+      "Default": true
+    },
+    {
+      "Operation": "halt",
+      "Command": "C:\\Windows\\System32\\shutdown.exe -s -t 0 -f",
+      "Type": "external",
+      "Default": false
+    }
+  ]
+}</code></pre>
+              <p class="note">
+                Each entry in <code>Commands</code> becomes a URL. <code>"Operation": "halt"</code> creates
+                <code>http://&lt;PC-IP&gt;:8009/halt</code>. Add your own if you want, for example a
+                <code>reboot</code> operation running <code>shutdown.exe -r -t 0</code>.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Decide how forceful the shutdown should be.</p>
+              <div class="twrap">
+                <table>
+                  <thead>
+                    <tr><th>Command</th><th>Behaviour</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="k">shutdown.exe -s -t 0 -f</td>
+                      <td class="d">Immediate. Force-closes everything, no prompts, no way to cancel. Unsaved work is lost.</td>
+                    </tr>
+                    <tr>
+                      <td class="k">shutdown.exe -s -t 30 -f</td>
+                      <td class="d">30-second countdown with an on-screen warning. Cancel from any console with <code>shutdown /a</code>. Safer if you actually sit at this PC.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Open the firewall for SOL &mdash; scoped to UpSnap only.</p>
+              <p class="note">In an <strong>Administrator</strong> PowerShell:</p>
+              <pre><code>New-NetFirewallRule -DisplayName 'Sleep-On-LAN HTTP' -Direction Inbound `
+    -Protocol TCP -LocalPort 8009 -RemoteAddress &lt;UPSNAP-IP&gt; -Action Allow
+
+New-NetFirewallRule -DisplayName 'Sleep-On-LAN UDP' -Direction Inbound `
+    -Protocol UDP -LocalPort 9 -RemoteAddress &lt;UPSNAP-IP&gt; -Action Allow</code></pre>
+              <p class="note">
+                SOL has no authentication by default. Anyone who can reach port 8009 can shut this PC down
+                with a single web request, so restricting the source address is not optional hardening
+                &mdash; it is the only thing protecting the endpoint.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Make it start with Windows.</p>
+              <p class="note">
+                <code>sol.exe</code> is a normal console program, so it cannot be registered as a Windows
+                service directly &mdash; <code>sc.exe create</code> produces error 1053 when it fails to
+                respond to the service manager. A scheduled task running as <code>SYSTEM</code> does the
+                same job with nothing extra installed. In an <strong>Administrator</strong> PowerShell:
+              </p>
+              <pre><code>$dir = 'C:\Tools\sleep-on-lan'
+
+$action    = New-ScheduledTaskAction -Execute "$dir\sol.exe" -WorkingDirectory $dir
+$trigger   = New-ScheduledTaskTrigger -AtStartup
+$principal = New-ScheduledTaskPrincipal -UserId 'S-1-5-18' `
+                -LogonType ServiceAccount -RunLevel Highest
+$settings  = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries `
+                -DontStopIfGoingOnBatteries -StartWhenAvailable `
+                -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
+$settings.ExecutionTimeLimit = 'PT0S'
+
+Register-ScheduledTask -TaskName 'SleepOnLAN' -Action $action -Trigger $trigger `
+    -Principal $principal -Settings $settings -Force
+
+Start-ScheduledTask -TaskName 'SleepOnLAN'</code></pre>
+              <p class="note">
+                Running as <code>SYSTEM</code> matters: the task starts at boot with nobody logged in, and
+                it has the rights to call the shutdown and suspend APIs.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Check it answers.</p>
+              <pre><code>curl http://127.0.0.1:8009/</code></pre>
+              <p class="note">
+                You should get XML listing the PC's network interfaces, the active listeners, and your two
+                commands. Open it in a browser on the PC if you prefer.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="call gotcha">
+          <span class="tag">If nothing is listening</span>
+          <p>
+            Antivirus is the usual culprit. <code>sol.exe</code> is an unsigned program that opens a
+            network listener and calls shutdown APIs, which looks exactly like malware to a scanner.
+            Check your quarantine and add <code>C:\Tools\sleep-on-lan</code> as an exclusion before
+            debugging anything else.
+          </p>
+        </div>
+
+        <div class="call gotcha">
+          <span class="tag">Sleep may actually hibernate</span>
+          <p>
+            If hibernation is enabled, Windows' <code>SetSuspendState</code> call hibernates (S4) rather
+            than sleeping (S3), whatever arguments you pass it. That is usually fine &mdash; Wake-on-LAN
+            works from both. If you specifically want real sleep, run <code>powercfg /hibernate off</code>
+            first. And note that verifying the task afterwards from a non-administrator prompt reports
+            <em>Access is denied</em> or <em>not found</em>, because a <code>SYSTEM</code> task is hidden
+            from ordinary users &mdash; that does not mean it failed. Check from an elevated prompt.
+          </p>
+        </div>
+
+        <div class="call check">
+          <span class="tag">Checkpoint</span>
+          <p>
+            Reboot the PC and run the <code>curl</code> above again without starting anything by hand. If
+            SOL answers, it is surviving reboots correctly.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ UPSNAP ============ -->
+      <section class="stage" id="upsnap">
+        <div class="stage-head">
+          <p class="eyebrow">Stage 5</p>
+          <h2>Wire it up in UpSnap</h2>
+          <p class="sub">
+            Everything now works; this stage just points the dashboard at it.
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li>
+            <div class="body">
+              <p>Add the device, or edit it if UpSnap discovered it already.</p>
+              <div class="twrap">
+                <table>
+                  <thead>
+                    <tr><th>Field</th><th>Value</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="k">Name</td><td class="d">Anything you like</td></tr>
+                    <tr><td class="k">IP</td><td class="d"><span class="ph">&lt;PC-IP&gt;</span></td></tr>
+                    <tr><td class="k">MAC</td><td class="d"><span class="ph">&lt;PC-MAC&gt;</span> &mdash; the wired card, not a virtual adapter</td></tr>
+                    <tr><td class="k">Netmask</td><td class="d">Usually <code>255.255.255.0</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="note">
+                If the PC runs VMware, VirtualBox or Hyper-V, check this carefully. Auto-discovery
+                sometimes picks a virtual adapter, and both waking and shutting down will silently target
+                a network card that does not exist when the machine is off.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Make sure the PC answers ping.</p>
+              <p class="note">
+                UpSnap decides whether a device is online by <strong>pinging it</strong>, and it hides the
+                sleep and shutdown buttons on any device it believes is off. A PC that is running
+                perfectly but blocks ICMP therefore shows as powered down with no controls &mdash; which
+                looks exactly like a broken Wake-on-LAN setup, and sends people back to re-checking BIOS
+                settings that were never the problem.
+              </p>
+              <p class="note">
+                Windows blocks inbound ping by default. In an <strong>Administrator</strong> PowerShell:
+              </p>
+              <pre><code>Get-NetFirewallRule -Direction Inbound |
+    Where-Object { $_.DisplayName -like 'File and Printer Sharing (Echo Request*' -and
+                   $_.Profile -notmatch '^Public$' } |
+    Enable-NetFirewallRule</code></pre>
+              <p class="note">
+                Verify it from <em>another</em> machine, never from the PC itself &mdash; local traffic
+                bypasses the firewall entirely, so a PC can always ping its own address and will report
+                success even while every other host on the network gets nothing.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Fill in the Sleep-On-LAN section.</p>
+              <div class="twrap">
+                <table>
+                  <thead>
+                    <tr><th>Field</th><th>Value</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="k">Enable Sleep-On-LAN</td><td class="d">On</td></tr>
+                    <tr><td class="k">SOL Port</td><td class="d"><code>8009</code> &mdash; must match the <code>HTTP:</code> listener in <code>sol.json</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Fill in the Shutdown section.</p>
+              <div class="twrap">
+                <table>
+                  <thead>
+                    <tr><th>Field</th><th>Value</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="k">Shutdown command</td>
+                      <td class="d"><code>curl -s -m 5 http://{{ DEVICE_IP }}:8009/halt</code></td>
+                    </tr>
+                    <tr>
+                      <td class="k">Shutdown Timeout</td>
+                      <td class="d"><code>30</code></td>
+                    </tr>
+                    <tr>
+                      <td class="k">Enable shutdown cron</td>
+                      <td class="d">Off, unless you want it powering down on a schedule</td>
+                    </tr>
+                    <tr>
+                      <td class="k">Require Confirmation</td>
+                      <td class="d">On &mdash; strongly recommended with an immediate shutdown command</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="note">
+                <code>{{ DEVICE_IP }}</code> is an UpSnap placeholder; it substitutes the device's real
+                address when the command runs. <code>{{ DEVICE_MAC }}</code> works the same way.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Understand what Shutdown Timeout actually does.</p>
+              <p class="note">
+                It does <strong>not</strong> delay the shutdown. It is how long UpSnap waits before
+                re-checking whether the device went offline. The delay before the PC powers off is set
+                entirely by the <code>-t</code> value in <code>sol.json</code>. Set the UpSnap timeout
+                comfortably higher than that <code>-t</code> value, or UpSnap will re-probe while the
+                countdown is still running and report the device as still online.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Test the path before pressing anything destructive.</p>
+              <p class="note">
+                The shutdown command runs <em>where UpSnap runs</em>, so test it from there. If UpSnap is
+                in Docker:
+              </p>
+              <pre><code>docker exec upsnap curl -s -m 5 http://&lt;PC-IP&gt;:8009/</code></pre>
+              <p class="note">If UpSnap runs as a plain binary, on its host or in an LXC:</p>
+              <pre><code>curl -s -m 5 http://&lt;PC-IP&gt;:8009/</code></pre>
+              <p class="note">
+                The trailing <code>/</code> is deliberate &mdash; that is the harmless status page.
+                Do not test with <code>/halt</code> unless you mean it.
+              </p>
+            </div>
+          </li>
+
+          <li>
+            <div class="body">
+              <p>Save, then try all three buttons: wake, sleep, shutdown.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="call blocker">
+          <span class="tag">If UpSnap is not the Docker image</span>
+          <p>
+            The official Docker image ships with <code>curl</code>, <code>sshpass</code> and Samba
+            preinstalled. <strong>A bare LXC or a manual binary install has none of them.</strong> UpSnap
+            will hand your command to the shell, get <code>curl: not found</code>, and report a failed
+            shutdown with no useful explanation. Run <code>command -v curl</code> on that host first, and
+            <code>apt install -y curl</code> if it is missing.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ TROUBLESHOOTING ============ -->
+      <section class="stage" id="trouble">
+        <div class="stage-head">
+          <p class="eyebrow">Reference</p>
+          <h2>Troubleshooting</h2>
+          <p class="sub">Find your symptom; the cause is almost always in the same row.</p>
+        </div>
+
+        <div class="twrap">
+          <table>
+            <thead>
+              <tr><th>Symptom</th><th>Most likely cause</th><th>Fix</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="d"><strong>UpSnap shows the PC as off while it is clearly running, and the sleep / shutdown buttons are missing</strong></td>
+                <td class="d">The PC blocks inbound ping, so UpSnap's online check fails; it hides controls on devices it thinks are off</td>
+                <td class="d">Enable the inbound ICMPv4 echo rules (Stage 5 step 2). Test the ping from another host, not from the PC itself</td>
+              </tr>
+              <tr>
+                <td class="d"><strong>Everything broke right after a BIOS update</strong></td>
+                <td class="d">Flashing firmware reset CMOS, re-enabling ErP Ready and disabling Power On By PCI-E</td>
+                <td class="d">Re-apply Stage 1. The Windows settings survived, so only the firmware half needs redoing</td>
+              </tr>
+              <tr>
+                <td class="d"><strong>Wakes from sleep, but not after shutdown</strong></td>
+                <td class="d">The S5-specific driver property is off, or ErP Ready is on in BIOS</td>
+                <td class="d">Set <strong>Enable PME</strong> (Intel) or <strong>Shutdown Wake-On-Lan</strong> (Realtek); disable ErP Ready</td>
+              </tr>
+              <tr>
+                <td class="d">Nothing wakes it at all, link light dark when off</td>
+                <td class="d">No standby power reaching the card</td>
+                <td class="d">BIOS: disable ErP / Deep Sleep, enable Power On By PCI-E</td>
+              </tr>
+              <tr>
+                <td class="d">Worked for months, suddenly stopped</td>
+                <td class="d">A driver update reset the Advanced tab to defaults</td>
+                <td class="d">Re-apply Stage 2 step 3</td>
+              </tr>
+              <tr>
+                <td class="d">Works from a PC on the same switch, not from UpSnap</td>
+                <td class="d">UpSnap is on a different VLAN; broadcasts do not cross routers</td>
+                <td class="d">Move UpSnap to the same subnet, or add a static ARP entry on the router</td>
+              </tr>
+              <tr>
+                <td class="d">Wakes by itself at random times</td>
+                <td class="d">Wake on Pattern Match enabled, or a wake timer</td>
+                <td class="d">Tick <strong>Only allow a magic packet</strong>; run <code>powercfg /lastwake</code> to identify the source</td>
+              </tr>
+              <tr>
+                <td class="d">Shutdown button does nothing</td>
+                <td class="d"><code>curl</code> missing where UpSnap runs, or the firewall blocks 8009</td>
+                <td class="d">Run the Stage 5 step 5 test and read the actual error</td>
+              </tr>
+              <tr>
+                <td class="d">SOL not listening after a reboot</td>
+                <td class="d">Antivirus quarantined <code>sol.exe</code>, or the task did not register</td>
+                <td class="d">Check quarantine, add an exclusion, re-run the registration from an elevated prompt</td>
+              </tr>
+              <tr>
+                <td class="d">Sleep button hibernates instead</td>
+                <td class="d">Hibernation is enabled, so <code>SetSuspendState</code> hibernates</td>
+                <td class="d">Accept it, or run <code>powercfg /hibernate off</code></td>
+              </tr>
+              <tr>
+                <td class="d">Wake works, but only sometimes</td>
+                <td class="d">Energy Efficient Ethernet dropping the link</td>
+                <td class="d">Disable EEE / Green Ethernet on the Advanced tab</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prose">
+          <h3>Useful commands to run on the PC</h3>
+          <pre><code># which devices are allowed to wake this PC
+powercfg /devicequery wake_armed
+
+# what woke it last time
+powercfg /lastwake
+
+# which sleep states the hardware supports
+powercfg /a
+
+# is Fast Startup off? 0 means yes
+Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Power' `
+    -Name HiberbootEnabled</code></pre>
+        </div>
+      </section>
+
+      <!-- ============ LINUX ============ -->
+      <section class="stage" id="linux">
+        <div class="stage-head">
+          <p class="eyebrow">Appendix</p>
+          <h2>Linux targets</h2>
+          <p class="sub">
+            The same three stages apply. Only Stage 2 and Stage 4 differ.
+          </p>
+        </div>
+
+        <div class="prose">
+          <h3>Enable Wake-on-LAN</h3>
+          <p>Check what the card supports and whether it is armed:</p>
+          <pre><code>sudo ethtool eth0 | grep -i wake
+# Supports Wake-on: pumbg
+# Wake-on: d          <- d means disabled</code></pre>
+          <p>Turn it on. <code>g</code> means "wake on magic packet":</p>
+          <pre><code>sudo ethtool -s eth0 wol g</code></pre>
+          <p>
+            That resets at reboot. To make it stick with NetworkManager:
+          </p>
+          <pre><code>nmcli connection modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic</code></pre>
+          <p>Or with a systemd unit, if you are not using NetworkManager:</p>
+          <pre><code>sudo tee /etc/systemd/system/wol.service &lt;&lt;'EOF'
+[Unit]
+Description=Enable Wake-on-LAN
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/ethtool -s eth0 wol g
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable --now wol.service</code></pre>
+
+          <h3>Sleep-On-LAN commands</h3>
+          <p>Same <code>sol.json</code> structure, different commands:</p>
+          <pre><code>"Commands": [
+  {
+    "Operation": "sleep",
+    "Command": "systemctl suspend",
+    "Type": "external",
+    "Default": true
+  },
+  {
+    "Operation": "halt",
+    "Command": "systemctl poweroff",
+    "Type": "external",
+    "Default": false
+  }
+]</code></pre>
+          <p>Run it as a systemd service so it starts at boot as root:</p>
+          <pre><code>sudo tee /etc/systemd/system/sleep-on-lan.service &lt;&lt;'EOF'
+[Unit]
+Description=Sleep-On-LAN
+After=network-online.target
+
+[Service]
+ExecStart=/opt/sleep-on-lan/sol
+WorkingDirectory=/opt/sleep-on-lan
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable --now sleep-on-lan.service</code></pre>
+
+          <h3>Sleeping over UDP instead of HTTP</h3>
+          <p>
+            SOL can also be triggered by a magic packet on UDP&nbsp;9, using the machine's
+            <strong>MAC address reversed</strong> &mdash; so a card with
+            <code>c4:d9:87:7a:78:35</code> sleeps when it receives a packet for
+            <code>35:78:7a:87:d9:c4</code>. The reversal is what stops an ordinary wake packet from
+            immediately putting a running machine back to sleep. UpSnap uses the HTTP path instead,
+            because it is easier to authorise and gives a real success or failure response.
+          </p>
+        </div>
+      </section>
+
+      <footer class="end">
+        <p>
+          Order matters throughout: firmware, then Windows, then a bare wake test, then SOL, then UpSnap.
+          Each stage is testable on its own, and skipping ahead means debugging several layers at once.
+        </p>
+      </footer>
+
+    </main>
+  </div>
+</div>
