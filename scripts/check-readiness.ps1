@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
     Checks everything this PC needs for remote wake, sleep and shutdown, and reports
-    what is wrong. Read-only — changes nothing.
+    what is wrong. Read-only - changes nothing.
 
 .DESCRIPTION
     Runs fine without elevation, though a couple of checks report "needs admin" instead
@@ -24,7 +24,7 @@ function Write-Check {
     $color = if ($Ok) { 'Green' } elseif ($Warn) { 'Yellow' } else { 'Red' }
     Write-Host "[$mark] " -ForegroundColor $color -NoNewline
     Write-Host $Label -NoNewline
-    if ($Detail) { Write-Host "  — $Detail" -ForegroundColor DarkGray } else { Write-Host '' }
+    if ($Detail) { Write-Host "  - $Detail" -ForegroundColor DarkGray } else { Write-Host '' }
 }
 
 $elevated = ([Security.Principal.WindowsPrincipal] `
@@ -34,7 +34,7 @@ $elevated = ([Security.Principal.WindowsPrincipal] `
 Write-Host ''
 Write-Host 'Remote power readiness' -ForegroundColor Cyan
 Write-Host '======================' -ForegroundColor Cyan
-if (-not $elevated) { Write-Host 'Running unelevated — some checks are limited.' -ForegroundColor DarkGray }
+if (-not $elevated) { Write-Host 'Running unelevated - some checks are limited.' -ForegroundColor DarkGray }
 Write-Host ''
 
 # --- adapter ----------------------------------------------------------------
@@ -50,7 +50,7 @@ if (-not $a) {
     Write-Check 'Wired adapter found' $false 'no physical adapter is Up'
     return
 }
-Write-Check 'Wired adapter found' $true "$($a.Name) — $($a.MacAddress)"
+Write-Check 'Wired adapter found' $true "$($a.Name) - $($a.MacAddress)"
 
 $ip = (Get-NetIPAddress -InterfaceAlias $a.Name -AddressFamily IPv4 -ErrorAction SilentlyContinue |
        Select-Object -First 1).IPAddress
@@ -66,11 +66,11 @@ Write-Check 'Wake on Magic Packet (S3/S4)' ($magic -eq 1) $(if ($null -eq $magic
 $pme    = Prop 'EnablePME'
 $rtlS5  = Prop 'ShutdownWakeOnLan'
 if ($null -ne $pme) {
-    Write-Check 'Enable PME (S5 — Intel)' ($pme -eq 1) "value=$pme"
+    Write-Check 'Enable PME (S5 - Intel)' ($pme -eq 1) "value=$pme"
 } elseif ($null -ne $rtlS5) {
-    Write-Check 'Shutdown Wake-On-Lan (S5 — Realtek)' ($rtlS5 -eq 1) "value=$rtlS5"
+    Write-Check 'Shutdown Wake-On-Lan (S5 - Realtek)' ($rtlS5 -eq 1) "value=$rtlS5"
 } else {
-    Write-Check 'S5 wake property' $false 'not exposed by this driver — check BIOS instead' -Warn
+    Write-Check 'S5 wake property' $false 'not exposed by this driver - check BIOS instead' -Warn
 }
 
 $pattern = Prop '*WakeOnPattern'
@@ -123,5 +123,5 @@ if ($fw) {
 
 Write-Host ''
 Write-Host 'This cannot see BIOS settings. If wake-from-shutdown fails with everything' -ForegroundColor DarkGray
-Write-Host 'above green, the cause is almost certainly ErP Ready — see Stage 1.' -ForegroundColor DarkGray
+Write-Host 'above green, the cause is almost certainly ErP Ready - see Stage 1.' -ForegroundColor DarkGray
 Write-Host ''

@@ -6,7 +6,7 @@
 
 .DESCRIPTION
     "Wake on Magic Packet" only covers S3/S4. Waking from a full shutdown needs a
-    second property with a vendor-specific name — "Enable PME" on Intel,
+    second property with a vendor-specific name - "Enable PME" on Intel,
     "Shutdown Wake-On-Lan" on Realtek. This sets whichever ones exist.
 
     Properties not present on your driver are skipped silently; no card has all of them.
@@ -45,7 +45,7 @@ if (-not $AdapterName) {
 }
 
 $adapter = Get-NetAdapter -Name $AdapterName
-Write-Host "Adapter: $($adapter.Name) — $($adapter.InterfaceDescription)" -ForegroundColor Cyan
+Write-Host "Adapter: $($adapter.Name) - $($adapter.InterfaceDescription)" -ForegroundColor Cyan
 Write-Host "MAC:     $($adapter.MacAddress)   <- this is what UpSnap needs" -ForegroundColor Cyan
 Write-Host ''
 
@@ -114,6 +114,6 @@ powercfg /devicequery wake_armed
 
 Write-Host ''
 Write-Host "The adapter must appear in that list. If it doesn't, the Power Management" -ForegroundColor Yellow
-Write-Host 'checkbox did not take — set it by hand in Device Manager.' -ForegroundColor Yellow
+Write-Host 'checkbox did not take - set it by hand in Device Manager.' -ForegroundColor Yellow
 Write-Host ''
 Write-Host 'Remember: BIOS settings matter too. See Stage 1 of the README.' -ForegroundColor Yellow

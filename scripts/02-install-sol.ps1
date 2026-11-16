@@ -5,7 +5,7 @@
 
 .DESCRIPTION
     sol.exe is a plain console binary, so `sc.exe create` fails with error 1053 when it
-    does not answer the service control manager. The usual workaround is NSSM — another
+    does not answer the service control manager. The usual workaround is NSSM - another
     unsigned binary to get past antivirus. An AtStartup scheduled task running as SYSTEM
     does the same job with nothing extra on disk: starts at boot with no login, survives
     logoff, and has the rights to call the shutdown and suspend APIs.
@@ -108,7 +108,7 @@ try {
     Write-Host 'SOL is up and will start at boot.' -ForegroundColor Green
 } catch {
     Write-Warning "No answer on port $Port : $($_.Exception.Message)"
-    Write-Warning 'Check antivirus quarantine first — sol.exe is unsigned and opens a listener.'
+    Write-Warning 'Check antivirus quarantine first - sol.exe is unsigned and opens a listener.'
     Write-Warning "To see the error directly:  cd '$InstallDir' ; .\sol.exe"
 }
 

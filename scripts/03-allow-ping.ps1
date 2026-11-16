@@ -16,7 +16,7 @@
     Restrict who may ping, e.g. the UpSnap host. Default 'Any'.
 
 .PARAMETER IncludePublic
-    Also allow it on the Public profile. Off by default — on an untrusted network
+    Also allow it on the Public profile. Off by default - on an untrusted network
     you normally do not want to answer pings.
 
 .EXAMPLE
